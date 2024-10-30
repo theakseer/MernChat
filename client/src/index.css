@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+* {
+  ::-webkit-scrollbar {
+    cursor: pointer;
+    width: 1px;
+  }
+  ::-webkit-scrollbar-track {
+    cursor: pointer;
+    background: pink;
+
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: RED;
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color:ORANGE;
+  }
+}
