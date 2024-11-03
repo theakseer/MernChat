@@ -6,11 +6,11 @@ export const signUp = async (req, res) => {
     try {
         const { fullName, username, password, confirmPassword, gender } = req.body;
         if (password !== confirmPassword) {
-            return res.status(400).json({ message: "Password do not match" });
+            return res.status(400).json({ error: "Password do not match" });
         }
         const user = await User.findOne({ username });
         if (user) {
-            return res.status(400).json({ message: "Username already in use" });
+            return res.status(400).json({ error: "Username already in use" });
         }
         // hash password here
         const salt = await bcrypt.genSalt(10)
@@ -33,8 +33,7 @@ export const signUp = async (req, res) => {
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 username: newUser.username,
-                profilePic: newUser.profilePic,
-
+                profilePic: newUser.profilePic
             });
         }
         else {
@@ -52,7 +51,7 @@ export const logIn = async (req, res) => {
 
         const isPasswordMatch = await bcrypt.compare(password, user.password || "")
         if (!isPasswordMatch || !user) {
-            return res.status(404).json({ message: 'Invalid user credentials' });
+            return res.status(404).json({ error: 'Invalid user credentials' });
         }
         generateAccessToken(user._id, res)
         res.status(200).json({
@@ -65,7 +64,7 @@ export const logIn = async (req, res) => {
 
     } catch (error) {
         console.log("Error logging in:", error);
-        res.status(500).json({ message: "Internal Server Error, " + error.message });
+        res.status(500).json({ error: "Internal Server Error, " + error.message });
     }
 }
 export const logOut = (req, res) => {

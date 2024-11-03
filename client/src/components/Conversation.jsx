@@ -1,18 +1,22 @@
-const  Conversation = () => {
+import  useConversationStore from "../hooks/useConversationStore"
+const  Conversation = ({userChat}) => {
+  const {selectedConversation, setSelectedConversation} = useConversationStore()
+  const isSelected = selectedConversation?._id == userChat._id
   return (
     <>
-    <div className="flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer">
+    <div className={`flex gap-2 items-center hover:bg-sky-500 ${isSelected && "bg-sky-500"} rounded p-2 py-1 cursor-pointer`}>
       <div className="avatar online">
         <div className="w-12 rounded-full">
-          <img src="https://avatar.iran.liara.run/public/boy?username=akseer" alt="" />
+          <img src={userChat.profilePic} alt="" />
         </div>
       </div>
       <div className="flex flex-row flex-1 gap-3 justify-between">
-        <p className="font-bold text-gray-200">James Doe</p>
-        <span className="text-xl">🎃</span>
+        <p className="font-bold text-gray-200">{userChat.fullName}</p>
+        <span className="last-seen"></span>
       </div>
     </div>
     <div className="divider my-0 py-0 h-1"></div>
+    {/* implement last index */}
     </>
   )
 }

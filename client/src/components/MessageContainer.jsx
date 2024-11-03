@@ -1,9 +1,11 @@
 import { TiMessage, TiMessages } from "react-icons/ti"
 import MessageInput from "./MessageInput"
 import Messages from "./Messages"
+import { useAuthContext } from "../context/AuthContext"
 
 const MessageContainer = () => {
-  const noChatSelected = false
+  const noChatSelected = true
+  const {authUser}=useAuthContext()
   return (
     <div className="flex-2 md:min-w-[450px] flex flex-col border-l border-slate-500 pl-1">
       {
@@ -12,7 +14,7 @@ const MessageContainer = () => {
           : (
             <>
               <div className="bg-slate-400 px-4 py-2 text-left rounded">
-                <span className="label-text">To: </span> <span className="text-gray-900 font-bold">James Doe</span>
+                <span className="label-text">To: </span> <span className="text-gray-900 font-bold">{authUser.fullName}</span>
               </div>
               <Messages />
               <MessageInput />
@@ -26,10 +28,11 @@ const MessageContainer = () => {
 export default MessageContainer
 
 const NoChatSelected = () => {
+  const {authUser}=useAuthContext()
   return (
     <div className="w-full h-full flex items-center justify-center font-bold text-white">
       <div className="flex items-center justify-center flex-col">
-        <p>Welcome 👋 Jane Doe</p>
+        <p>Welcome 👋 {authUser.fullName}</p>
         <p>Please select a chat to message.</p>
         <TiMessages className="text-3xl"/>
       </div>
