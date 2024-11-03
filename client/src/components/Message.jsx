@@ -1,11 +1,16 @@
+import useConversation from "../hooks/useConversationStore"
+import { useMessages } from "../hooks/useMessages"
+
 const Message = ({ person }) => {
+  const {messages}=useMessages()
+  const {selectedConversation} = useConversation()
   return (
     <>
       <div className={`chat ${person}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              src={selectedConversation.profilePic} />
           </div>
         </div>
         <div className="chat-bubble">You were the Chosen One!</div>

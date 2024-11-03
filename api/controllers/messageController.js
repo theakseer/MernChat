@@ -39,13 +39,17 @@ export const getMessages = async (req, res) => {
     try {
         const { id: recieverId } = req.params
         const senderId = req.user._id;
-        const messages = await Message.find({
-                senderId,recieverId
-        })
-        
-        res.status(200).json({ messages: messages })
+        const messages = await Conversation.findOne({
+            participants: {
+                $all: [recieverId, senderId]
+            }
+        }).select("messages").populate({
+            path: 'messages',
+            model: 'Message', // Specify the model 
+        });
+        res.status(200).send(messages.messages)
     } catch (error) {
-        console.log("Error in message controler", error.message);
+        console.log("Error in message controller", error.message);
         res.status(500).json({ message: "Server error" })
     }
 }
