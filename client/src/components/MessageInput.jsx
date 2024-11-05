@@ -1,4 +1,3 @@
-import { BsSend } from "react-icons/bs"
 import { LuSendHorizonal } from "react-icons/lu"
 import useSendMessage from "../hooks/useSendMessage"
 import toast from "react-hot-toast"
@@ -24,7 +23,11 @@ const  MessageInput = () => {
         onChange={(e)=>setmessage(e.target.value)}
         />
         <button type="submit">
-          <LuSendHorizonal className="h-8 w-8 mr-5 text-white"/>
+          {
+          loading 
+          ? <div className="loading loading-spinner h-8 w-8 mr-5"></div> 
+          : <LuSendHorizonal className="h-8 w-8 mr-5 text-white"/>
+          }
         </button>
       </div>
     </form>

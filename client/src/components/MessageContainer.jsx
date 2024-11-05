@@ -1,4 +1,4 @@
-import { TiMessage, TiMessages } from "react-icons/ti"
+import { TiMessages } from "react-icons/ti"
 import MessageInput from "./MessageInput"
 import Messages from "./Messages"
 import { useAuthContext } from "../context/AuthContext"
@@ -7,7 +7,6 @@ import { useEffect } from "react"
 
 const MessageContainer = () => {
   const {selectedConversation, setSelectedConversation}= useConversation()
-  const {authUser}=useAuthContext()
   useEffect(() =>{
     return () => {
       setSelectedConversation(null)

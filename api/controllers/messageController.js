@@ -27,7 +27,7 @@ const sendMessage = async (req, res) => {
         // socket io 
 
         await conversation.save();
-        res.status(200).send({ message: "message successfully sent" })
+        res.status(200).json({ newMessage })
 
     } catch (error) {
         console.log("Error in message controler", error.message);
@@ -46,7 +46,12 @@ export const getMessages = async (req, res) => {
         }).select("messages").populate({
             path: 'messages',
             model: 'Message', // Specify the model 
+            select: 'message senderId recieverId createdAt ',  
         });
+        if(!messages){
+            res.status(200).json({error:"No messages with the user", message:"No messages with the user"})
+            return
+        }
         res.status(200).send(messages.messages)
     } catch (error) {
         console.log("Error in message controller", error.message);

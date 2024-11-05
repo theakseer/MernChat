@@ -1,6 +1,5 @@
-import { useEffect } from "react"
 import  useConversationStore from "../hooks/useConversationStore"
-import { useMessages } from "../hooks/useMessages"
+
 const  Conversation = ({userChat}) => {
   const {selectedConversation, setSelectedConversation} = useConversationStore()
   const isSelected = selectedConversation?._id == userChat._id
