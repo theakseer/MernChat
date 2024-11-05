@@ -2,13 +2,16 @@ import { TiMessages } from "react-icons/ti"
 import useConversation from "../hooks/useConversationStore"
 import { useMessages } from "../hooks/useMessages"
 import Message from "./Message"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 const  Messages = () => {
   const {messages} = useConversation()
   const {loading} = useMessages()
+  const ref = useRef()
   useEffect(()=>{
-    
+    setTimeout(()=>{
+      ref?.current?.scrollIntoView({behavior: 'smooth'})
+    },100)
   }, [messages])
   if (loading) {
     return <div className="grow overflow-auto mb-1 flex items-center justify-center"> <div className="loading loading-spinner"></div> </div>
@@ -23,6 +26,7 @@ const  Messages = () => {
           <Message message={chat} key={i}/>
         ))
       }
+      <span ref={ref}></span>
     </div>
   )
 }

@@ -9,14 +9,14 @@ export const useMessages = () => {
     const getMessages = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`/api/messages/${selectedConversation._id}`)
+        const res = await fetch(`/api/messages/${selectedConversation._id}`).catch(err=> console.log("Error fetching:", err))
         const data = await res.json()
         // console.log(data)
         if (data.error) {
           throw new Error(data.error)
         }
         setMessages(data)
-        console.log(data)
+        // console.log(res)
       } catch (error) {
         // toast.error(error.message)
         setMessages([])
