@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 # client
 # client/node_modules
+client/buid
 .env
 dist
 dist-ssr
