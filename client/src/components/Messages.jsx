@@ -3,11 +3,14 @@ import useConversation from "../hooks/useConversationStore"
 import { useMessages } from "../hooks/useMessages"
 import Message from "./Message"
 import { useEffect, useRef } from "react"
+import useListenMessage from "../hooks/useListenMessage"
 
 const  Messages = () => {
   const {messages} = useConversation()
   const {loading} = useMessages()
   const ref = useRef()
+  
+  useListenMessage();
   useEffect(()=>{
     setTimeout(()=>{
       ref?.current?.scrollIntoView({behavior: 'smooth'})

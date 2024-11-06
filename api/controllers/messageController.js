@@ -1,5 +1,6 @@
 import Message from "../model/message.model.js";
 import Conversation from "../model/conversation.model.js";
+import { getSocketId, io } from "../socket/socket.js";
 
 const sendMessage = async (req, res) => {
     try {
@@ -24,9 +25,13 @@ const sendMessage = async (req, res) => {
             })
         }
         if (newMessage) conversation.messages.push(newMessage._id);
-        // socket io 
-
         await conversation.save();
+        // socket io 
+        const recipientSocket = getSocketId(recieverId);
+        console.log(recipientSocket,':', newMessage);
+        if (recipientSocket) {
+            io.to(recipientSocket).emit("newMessage", newMessage); // send new message to recipient socket
+        }
         res.status(200).json({ newMessage })
 
     } catch (error) {

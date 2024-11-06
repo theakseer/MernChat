@@ -5,10 +5,11 @@ import {isToday, isYesterday, isThisWeek, isThisYear, isThisMinute, format} from
 const Message = ({ message }) => {
   const { authUser } = useAuthContext()
   const { selectedConversation } = useConversation()
+  const shake = message.shake ? "new-message-shake" : ""
 
   return (
     <>
-      <div className={`chat ${message.senderId !== selectedConversation._id ? "chat-end" : "chat-start"}`}>
+      <div className={`chat ${message.senderId !== selectedConversation._id ? "chat-end" : "chat-start"} ${shake}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
