@@ -22,7 +22,7 @@ app.use("/api/messages", messageRoutes)
 app.use("/api/users", userRoutes)
 
 app.get("*", (req, res)=>{
-    res.sendFile(path.join(__dirname,"cliet/dist/index.html"));
+    res.sendFile(path.join(__dirname,"client/dist/index.html"));
 })
 
 server.listen(port, () => {
