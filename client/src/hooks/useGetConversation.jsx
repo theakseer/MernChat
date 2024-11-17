@@ -4,6 +4,7 @@ import toast from "react-hot-toast"
 export const useGetConversation = () => {
   const [loading, setLoading] = useState(false)
   const [userChatList, setUserChatList] = useState([])
+  const [myConversationList, setMyConversationList] = useState([])
 
   useEffect(() => {
     const getUserChatlist = async () => {
@@ -22,7 +23,25 @@ export const useGetConversation = () => {
         setLoading(false)
       }
     }
+    const getMyConversationList = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch(`/api/users/myConversationList`)
+        const data = await res.json()
+        if (data.error) {
+          throw new Error(data.error)
+        }
+        setMyConversationList(data.conversationList)
+        console.log(data.conversationList)
+      } catch (error) {
+        console.log("this is error",error)
+        toast.error("Something went wrong in myconver", error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    getMyConversationList() 
     getUserChatlist()
   }, [])
-  return { loading, userChatList }
+  return { loading, userChatList, myConversationList}
 }

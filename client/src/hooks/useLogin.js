@@ -22,8 +22,6 @@ export const useLogin = () => {
             }
             localStorage.setItem("authUser", JSON.stringify(data))
             setAuthUser(data)
-            toast.success("Loading...")
-            console.log(data)
         } catch (error) {
             toast.error(error.message || "Something went wrong")
         } finally {}

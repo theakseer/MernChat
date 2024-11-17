@@ -49,7 +49,7 @@ export const logIn = async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password || "")
+        const isPasswordMatch = await bcrypt.compare(password, user?.password || "")
         if (!isPasswordMatch || !user) {
             return res.status(404).json({ error: 'Invalid user credentials' });
         }
@@ -64,7 +64,7 @@ export const logIn = async (req, res) => {
 
     } catch (error) {
         console.log("Error logging in:", error);
-        res.status(500).json({ error: "Internal Server Error, " + error.message });
+        res.status(500).json({ error: "Internal Server Error."});
     }
 }
 export const logOut = (req, res) => {

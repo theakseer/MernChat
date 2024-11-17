@@ -36,7 +36,6 @@ const Login = () => {
               {"Don't"} have an account yet?
             </Link>
             <button className="btn btn-block text-blue-400 btn-sm mt-2"
-            //  onClick={handleSubmit}
             >Login</button>
             
           </form>

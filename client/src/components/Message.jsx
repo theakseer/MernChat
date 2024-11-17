@@ -10,7 +10,7 @@ const Message = ({ message }) => {
 
   return (
     <>
-      <div className={`chat ${message.senderId !== selectedConversation._id ? "chat-end" : "chat-start"} ${shake}`}>
+      <div className={`chat ${message.senderId !== selectedConversation._id ? "chat-end" : "chat-start"} max-w-lg overflow-auto ${shake}`}>
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
@@ -20,7 +20,7 @@ const Message = ({ message }) => {
             />
           </div>
         </div>
-        <div className="chat-bubble text-white">{message.message}</div>
+        <div className="chat-bubble text-white max-w-[300px] text-left max-h-max h-auto break-words">{message.message}</div>
         <div className="chat-footer opacity-50">{formatDateToLocalTime(message.createdAt)}</div>
       </div>
     </>
@@ -29,7 +29,7 @@ const Message = ({ message }) => {
 
 export default Message
 
-function formatDateToLocalTime(isoString) {
+export function formatDateToLocalTime(isoString) {
   const date = new Date(isoString);
   let formattedDate;
 if (isThisMinute(date)) {

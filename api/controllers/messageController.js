@@ -24,7 +24,10 @@ const sendMessage = async (req, res) => {
                 participants: [recieverId, senderId]
             })
         }
-        if (newMessage) conversation.messages.push(newMessage._id);
+        if (newMessage) {
+            conversation.messages.push(newMessage._id);
+            conversation.lastMessage = newMessage._id;
+        }
         await conversation.save();
         // socket io 
         const recipientSocket = getSocketId(recieverId);
