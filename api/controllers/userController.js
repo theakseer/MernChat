@@ -8,9 +8,10 @@ export const myConversationList = async (req, res) => {
             participants: {
                 $all: [senderId]
             },
-        }).sort(
-            {updatedAt:-1}
-        ).select("lastMessage").populate({
+        }).sort({
+            updatedAt:-1
+        })
+        .select("lastMessage").populate({
             path: "participants",
             model: "User",
             match: { _id: { $ne: senderId } },
@@ -22,13 +23,26 @@ export const myConversationList = async (req, res) => {
             match: { _id: { $ne: null } },
             select: "message senderId recieverId createdAt", 
           });
-        if(!conversationList){
-            res.status(200).json({message:"No messages with the user", message:"No messages with the user"})
-            return
+          if (!conversationList || conversationList.length === 0) {
+            return res.status(200).json({
+                error: "No messages found",
+                message: "You have no conversations.",
+            });
         }
-        res.status(200).json({conversationList:conversationList})
+        const result = conversationList.map((conversation) => {
+            const otherUser = conversation.participants.find(
+                (participant) => participant._id.toString() !== senderId.toString()
+            );
+    
+            return {
+                user:otherUser,
+                lastMessage:conversation.lastMessage,
+            };
+        });
+
+        res.status(200).json({conversationList:result})
     } catch (error) {
-        console.log("Error in user controller", error.message);
+        console.log("Error in user controller:", error.message);
         res.status(500).json({ message: "Server error" })
     }
 }

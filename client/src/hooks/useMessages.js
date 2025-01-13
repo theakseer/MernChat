@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import useConversation from "./useConversationStore"
+import useConversationStore from "./useConversationStore"
 
 export const useMessages = () => {
   const [loading, setLoading] = useState(false)
-  const {selectedConversation, setMessages, messages}= useConversation()
+  const {selectedConversation, setMessages, messages}= useConversationStore()
 
   useEffect(()=>{
     const getMessages = async () => {

@@ -31,7 +31,6 @@ const sendMessage = async (req, res) => {
         await conversation.save();
         // socket io 
         const recipientSocket = getSocketId(recieverId);
-        console.log(recipientSocket,':', newMessage);
         if (recipientSocket) {
             io.to(recipientSocket).emit("newMessage", newMessage); // send new message to recipient socket
         }

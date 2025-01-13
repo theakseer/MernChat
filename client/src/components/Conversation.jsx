@@ -1,5 +1,6 @@
 import { useSocketContext } from "../context/SocketContext"
 import useConversationStore from "../hooks/useConversationStore"
+import useListenMessage from "../hooks/useListenMessage"
 import { formatDateToLocalTime } from "./Message"
 
 const Conversation = ({ userChat, lastMessage }) => {
@@ -9,6 +10,7 @@ const Conversation = ({ userChat, lastMessage }) => {
   const isOnline = onlineUsers.includes(userChat?._id)
   const name = userChat?.fullName
   const profilePic = genProfilePic(name) //https://ui-avatars.com/api/?name=John%20Doe
+  useListenMessage();
   return (
     <>
       <div className={`flex gap-2 items-center hover:bg-sky-500 ${isSelected && "bg-sky-500"} rounded p-2 py-1 cursor-pointer`}
@@ -21,7 +23,7 @@ const Conversation = ({ userChat, lastMessage }) => {
         </div>
         <div className="flex flex-col flex-1 text-left justify-start items-start w-full">
           <p className="font-bold text-gray-200">{userChat?.fullName}</p>
-          <p className="mr-2 w-[160px] overflow-hidden text-sm opacity-50 overflow-ellipsis"> {lastMessage && lastMessage.message}</p>
+          <p className={`mr-2 w-[160px] overflow-hidden text-sm opacity-50 overflow-ellipsis ${lastMessage?.shake && 'font-bold opacity-100'}`}> {lastMessage && lastMessage.message}</p>
           <p className="self-end text-xs opacity-50"> {lastMessage && formatDateToLocalTime(lastMessage.createdAt)}</p>
         </div>
       </div>

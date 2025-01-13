@@ -1,11 +1,11 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
-import useConversation from "./useConversationStore"
+import useConversationStore from "./useConversationStore"
 
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false)
-  const {selectedConversation, messages, setMessages}= useConversation()
+  const {selectedConversation, messages, setMessages, myConversationList, setMyConversationList}= useConversationStore()
   
   const sendMessage = async (message) => {
     setLoading(true)
@@ -20,8 +20,20 @@ const useSendMessage = () => {
         throw new Error(data.error);
       }
       setMessages([...messages,{...data.newMessage}])
+      const updatedConversationList = myConversationList.map((element) => {
+        if (element.user && element.user._id && String(element.user._id).trim() === String(data.newMessage.recieverId).trim()) {
+            return {
+                ...element,
+                lastMessage: data.newMessage,
+            };
+        }
+        return element; // Return unchanged elements
+    });
+      setMyConversationList(updatedConversationList);
+
+      console.log(selectedConversation)
     } catch (error) {
-      toast.error(error.message)
+      console.log(error)
     } finally {
       setLoading(false)
     }

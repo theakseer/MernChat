@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import useConversationStore from "./useConversationStore"
 
 export const useGetConversation = () => {
   const [loading, setLoading] = useState(false)
   const [userChatList, setUserChatList] = useState([])
-  const [myConversationList, setMyConversationList] = useState([])
+  const { myConversationList, setMyConversationList } = useConversationStore();
 
   useEffect(() => {
     const getUserChatlist = async () => {
@@ -32,10 +33,9 @@ export const useGetConversation = () => {
           throw new Error(data.error)
         }
         setMyConversationList(data.conversationList)
-        console.log(data.conversationList)
+        // console.log(data.conversationList)
       } catch (error) {
         console.log("this is error",error)
-        toast.error("Something went wrong in myconver", error.message)
       } finally {
         setLoading(false)
       }
@@ -43,5 +43,5 @@ export const useGetConversation = () => {
     getMyConversationList() 
     getUserChatlist()
   }, [])
-  return { loading, userChatList, myConversationList}
+  return { loading, userChatList, myConversationList, setMyConversationList}
 }

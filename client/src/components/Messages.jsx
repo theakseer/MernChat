@@ -1,12 +1,12 @@
 import { TiMessages } from "react-icons/ti"
-import useConversation from "../hooks/useConversationStore"
+import useConversationStore from "../hooks/useConversationStore"
 import { useMessages } from "../hooks/useMessages"
 import Message from "./Message"
 import { useEffect, useRef } from "react"
 import useListenMessage from "../hooks/useListenMessage"
 
 const  Messages = () => {
-  const {messages} = useConversation()
+  const {messages} = useConversationStore()
   const {loading} = useMessages()
   const ref = useRef()
   
@@ -37,7 +37,7 @@ const  Messages = () => {
 export default Messages
 
 const NoMessages = () => {
-  const {selectedConversation} = useConversation()
+  const {selectedConversation} = useConversationStore()
 
   return (
     <div className="w-full h-full flex items-center justify-center font-bold text-white">

@@ -1,11 +1,11 @@
 import { useAuthContext } from "../context/AuthContext"
-import useConversation from "../hooks/useConversationStore"
+import useConversationStore from "../hooks/useConversationStore"
 import {isToday, isYesterday, isThisWeek, isThisYear, isThisMinute, format} from 'date-fns'
 import { genProfilePic } from "./Conversation"
 
 const Message = ({ message }) => {
   const { authUser } = useAuthContext()
-  const { selectedConversation } = useConversation()
+  const { selectedConversation } = useConversationStore()
   const shake = message.shake ? "new-message-shake" : ""
 
   return (
