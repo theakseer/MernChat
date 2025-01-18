@@ -11,21 +11,22 @@ const useListenMessage = () => {
 
 
   useEffect(() => {
-    socket?.on("newMessage", (newMessage) => {
+    socket?.on("newMessage", async (newMessage) => {
       newMessage.shake = true
-      console.log("newMessage:",newMessage)
+      console.log("newMessage:",{newMessage})
       console.log("myConversationList:",myConversationList)
       if (selectedConversation?._id === newMessage.senderId)
         setMessages([...messages, newMessage]);
-      const updatedConversationList = myConversationList.map((element) => {
-        if (element.user && element.user._id && String(element.user._id).trim() === String(newMessage.senderId).trim()) {
-            return {
-                ...element,
-                lastMessage: newMessage,
-            };
-        }
-        return element; // Return unchanged elements
-    });
+      const newConversation = {
+        user: await getUserById(newMessage.senderId), 
+        lastMessage: newMessage,
+    };
+    const updatedConversationList = [
+      newConversation, 
+      ...myConversationList.filter(
+          (element) => !(element.user && String(element.user._id).trim() === String(newMessage.senderId).trim())
+      ), 
+  ];
       setMyConversationList(updatedConversationList);
       const audio = new Audio(notificationSound)
       audio.play()
@@ -34,4 +35,24 @@ const useListenMessage = () => {
   }, [socket, messages])
 
 }
+
+async function getUserById(userId) {
+  try {
+      const response = await fetch(`/api/users/${userId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const userData = await response.json();
+      console.log(userData.user)
+      return userData;
+  } catch (error) {
+      console.error('Error fetching user:', error.message);
+  }
+}
+
 export default useListenMessage

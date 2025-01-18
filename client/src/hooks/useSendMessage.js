@@ -20,18 +20,24 @@ const useSendMessage = () => {
         throw new Error(data.error);
       }
       setMessages([...messages,{...data.newMessage}])
-      const updatedConversationList = myConversationList.map((element) => {
-        if (element.user && element.user._id && String(element.user._id).trim() === String(data.newMessage.recieverId).trim()) {
-            return {
-                ...element,
-                lastMessage: data.newMessage,
-            };
+      const updatedConversationList = myConversationList.reduce((acc, element) => {
+        if (
+            element.user &&
+            element.user._id &&
+            String(element.user._id).trim() === String(data.newMessage.recieverId).trim()
+        ) {
+            return [
+                {
+                    ...element,
+                    lastMessage: data.newMessage,
+                },
+                ...acc,
+            ];
         }
-        return element; // Return unchanged elements
-    });
-      setMyConversationList(updatedConversationList);
-
-      console.log(selectedConversation)
+        return [...acc, element];
+    }, []);
+    
+    setMyConversationList(updatedConversationList);
     } catch (error) {
       console.log(error)
     } finally {

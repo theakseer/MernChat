@@ -47,7 +47,7 @@ export const signUp = async (req, res) => {
 export const logIn = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).select("+password");
 
         const isPasswordMatch = await bcrypt.compare(password, user?.password || "")
         if (!isPasswordMatch || !user) {
@@ -59,7 +59,8 @@ export const logIn = async (req, res) => {
             fullName: user.fullName,
             username: user.username,
             profilePic: user.profilePic,
-
+            updatedAt: user.updatedAt,
+            createdAt: user.createdAt
         });
 
     } catch (error) {

@@ -1,10 +1,9 @@
 import { useEffect } from "react"
-import useConversationStore from "../hooks/useConversationStore"
 import { useGetConversation } from "../hooks/useGetConversation"
 import Conversation from "./Conversation"
 
 const Conversations = () => {
-  const { loading, userChatList, myConversationList } = useGetConversation()
+  const { loading, myConversationList } = useGetConversation()
 
   useEffect(() =>{},[myConversationList])
   if (loading) {

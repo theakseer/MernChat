@@ -57,3 +57,45 @@ export const allUsers = async (req, res) => {
         res.status(500).json({ message: "Server error" })
     }
 }
+
+export const getOneUser = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in user controller", error.message);
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+export const  searchUsers = async (req, res) => {
+    try {
+        const { query } = req.query; 
+        if (!query) {
+            return res.status(400).json({ error: 'Query parameter is required' });
+        }
+        if (query.length < 1) {
+            return res.status(400).json({ error: 'Please enter at least 3 characters' });
+        }
+
+        const users = await User.find({
+            $or: [
+                { username: { $regex: query, $options: 'i' } },
+                { fullname: { $regex: query, $options: 'i' } }
+            ]
+        });
+
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'No users found' });
+        }
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error searching for users:', error.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
