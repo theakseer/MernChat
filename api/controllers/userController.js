@@ -90,7 +90,7 @@ export const  searchUsers = async (req, res) => {
         });
 
         if (users.length === 0) {
-            return res.status(404).json({ error: 'No users found' });
+            return res.status(200).json({ error: 'No users found' });
         }
 
         res.status(200).json(users);

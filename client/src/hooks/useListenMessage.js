@@ -13,8 +13,6 @@ const useListenMessage = () => {
   useEffect(() => {
     socket?.on("newMessage", async (newMessage) => {
       newMessage.shake = true
-      console.log("newMessage:",{newMessage})
-      console.log("myConversationList:",myConversationList)
       if (selectedConversation?._id === newMessage.senderId)
         setMessages([...messages, newMessage]);
       const newConversation = {
@@ -48,7 +46,6 @@ export async function getUserById(userId) {
           throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
       const userData = await response.json();
-      console.log(userData.user)
       return userData;
   } catch (error) {
       console.error('Error fetching user:', error.message);

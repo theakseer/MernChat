@@ -21,7 +21,9 @@ const SearchInput = () => {
       const data = await response.json();
       if (data.error) {
         setError(data.error);
+        setIsOpen(true);
         setSearchList([]);
+        err.length > 0 && setTimeout(() => setIsOpen(false),1000)
       } else {
         setSearchList(data);
         setIsOpen(true);
@@ -32,10 +34,8 @@ const SearchInput = () => {
   };
 
   const handleClick = (user) => {
-    // setTimeout(()=>setIsOpen(false),200)
     setSelectedConversation(user);
-    // setIsOpen(false);
-    console.log(isOpen)
+    setTimeout(()=>setIsOpen(false),200)
     setSearch('')
   }
   useEffect(() => {},[isOpen])
@@ -43,7 +43,6 @@ const SearchInput = () => {
     <>
       <form className="flex items-center gap-2" onSubmit={handleSearch}>
         <input type="text" className="grow input input-bordered rounded-full" placeholder="Search"
-          // onBlur={()=>setTimeout(()=>setIsOpen(false),200)}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -55,10 +54,10 @@ const SearchInput = () => {
         <div className="btn m-1 hidden"></div>
         <ul tabIndex={0} className={`menu dropdown-content bg-base-100 rounded-box z-[100] w-56 p-2 dropdown-open shadow`}>
           {err 
-          ? <li className='left-0 text-left min-h-6 px-2'> {err && err}</li> 
+          ? <li className='left-0 text-left min-h-6 px-2'> {err}</li> 
           : searchList?.map( (user, i) => 
           <li key={user._id} className={`${i!==(searchList.length-1) && 'border-b-black border-b-[1px]'} w-full py-1`}>
-            <a onClick={()=> {handleClick(user); setTimeout(()=>setIsOpen(false),200)}} className='overflow-hidden w-full'>
+            <a onClick={()=> {handleClick(user)}} className='overflow-hidden w-full'>
               {user.fullName} <span className='text-sm opacity-50 p-0 m-0'>@{user.username}</span>
             </a>
           </li>

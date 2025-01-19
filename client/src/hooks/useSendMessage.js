@@ -1,5 +1,4 @@
 import { useState } from "react"
-import toast from "react-hot-toast"
 import useConversationStore from "./useConversationStore"
 
 
@@ -20,7 +19,17 @@ const useSendMessage = () => {
         throw new Error(data.error);
       }
       setMessages([...messages,{...data.newMessage}])
-      const updatedConversationList = myConversationList.reduce((acc, element) => {
+      const newConversation = {
+        user: selectedConversation, 
+        lastMessage: data.newMessage,
+    };
+    const updatedConversationList = [
+      newConversation, 
+      ...myConversationList.filter(
+          (element) => !(element.user && String(element.user._id).trim() === String(data.newMessage.recieverId).trim())
+      ), 
+  ];
+      /* const updatedConversationList = myConversationList.reduce((acc, element) => {
         if (
             element.user &&
             element.user._id &&
@@ -35,7 +44,7 @@ const useSendMessage = () => {
             ];
         }
         return [...acc, element];
-    }, []);
+    }, []); */
     
     setMyConversationList(updatedConversationList);
     } catch (error) {
