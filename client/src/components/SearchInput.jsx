@@ -23,7 +23,7 @@ const SearchInput = () => {
         setError(data.error);
         setIsOpen(true);
         setSearchList([]);
-        err.length > 0 && setTimeout(() => setIsOpen(false),1000)
+        err.toString().length > 0 && setTimeout(() => setIsOpen(false),2000)
       } else {
         setSearchList(data);
         setIsOpen(true);
@@ -35,9 +35,12 @@ const SearchInput = () => {
 
   const handleClick = (user) => {
     setSelectedConversation(user);
-    setTimeout(()=>setIsOpen(false),200)
+    setTimeout(() => {
+      setIsOpen(false)
+    }, 200);
     setSearch('')
   }
+ 
   useEffect(() => {},[isOpen])
   return (
     <>
@@ -50,11 +53,11 @@ const SearchInput = () => {
           <IoSearchSharp className='w-6 h-6 outline-none' />
         </button>
       </form>
-      <div className={`dropdown ${isOpen && 'dropdown-open'} mt-2 w-full`}>
-        <div className="btn m-1 hidden"></div>
+      {isOpen && (<div className={`dropdown ${isOpen && 'dropdown-open'} mt-2 w-full`}>
+        <div tabIndex={0} className="btn m-1 hidden" ></div>
         <ul tabIndex={0} className={`menu dropdown-content bg-base-100 rounded-box z-[100] w-56 p-2 dropdown-open shadow`}>
           {err 
-          ? <li className='left-0 text-left min-h-6 px-2'> {err}</li> 
+          ? <li className='left-0 text-left min-h-6 px-2 text-error'> {err}</li> 
           : searchList?.map( (user, i) => 
           <li key={user._id} className={`${i!==(searchList.length-1) && 'border-b-black border-b-[1px]'} w-full py-1`}>
             <a onClick={()=> {handleClick(user)}} className='overflow-hidden w-full'>
@@ -63,7 +66,7 @@ const SearchInput = () => {
           </li>
           )}
         </ul>
-      </div>
+      </div>)}
       <p
         className={`sticky text-white text-left left-0 text-sm mt-3 py-2 px-3 mb-2 w-fit pt-0 border-b-gray-600 border-solid border-b-2`}
         aria-label="My Chats"

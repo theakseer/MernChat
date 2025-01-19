@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { useSocketContext } from "../context/SocketContext"
 import useConversationStore from "../hooks/useConversationStore"
 import useListenMessage from "../hooks/useListenMessage"
@@ -10,7 +11,32 @@ const Conversation = ({ userChat, lastMessage }) => {
   const isOnline = onlineUsers.includes(userChat?._id)
   const name = userChat?.fullName
   const profilePic = genProfilePic(name) //https://ui-avatars.com/api/?name=John%20Doe
+  const ref = useRef()
+
   useListenMessage();
+  useEffect(()=>{
+      isSelected && setTimeout(()=>{
+        // ref?.current?.scrollIntoView({behavior: 'smooth'})
+        if (ref?.current) {
+          const rect = ref.current.getBoundingClientRect();
+          const isVisible =
+            rect.top >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+        
+          if (!isVisible) {
+            // If above the viewport, scroll to the top
+            if (rect.top < 0) {
+              ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } 
+            // If below the viewport, scroll to the bottom
+            else if (rect.bottom > window.innerHeight) {
+              ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+          }
+        }
+        
+      },100)
+    }, [selectedConversation, lastMessage])
   return (
     <>
       <div id={userChat?._id} className={`flex gap-2 items-center hover:bg-sky-500 ${isSelected && "bg-sky-500"} rounded p-2 py-1 cursor-pointer`}
@@ -22,7 +48,7 @@ const Conversation = ({ userChat, lastMessage }) => {
           </div>
         </div>
         <div className="flex flex-col flex-1 text-left justify-start items-start w-full">
-          <p className="font-bold text-gray-200">{userChat?.fullName}</p>
+          <p ref={ref} className="font-bold text-gray-200">{userChat?.fullName}</p>
           <p className={`mr-2 w-[160px] overflow-hidden text-sm opacity-50 overflow-ellipsis ${lastMessage?.shake && 'font-bold opacity-100'}`}> {lastMessage && lastMessage.message}</p>
           <p className="self-end text-xs opacity-50"> {lastMessage && formatDateToLocalTime(lastMessage.createdAt)}</p>
         </div>
