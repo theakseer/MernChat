@@ -36,7 +36,7 @@ const useListenMessage = () => {
 
 }
 
-async function getUserById(userId) {
+export async function getUserById(userId) {
   try {
       const response = await fetch(`/api/users/${userId}`, {
           method: 'GET',
