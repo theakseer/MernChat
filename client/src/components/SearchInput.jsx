@@ -23,7 +23,7 @@ const SearchInput = () => {
         setError(data.error);
         setIsOpen(true);
         setSearchList([]);
-        err.toString().length > 0 && setTimeout(() => setIsOpen(false),2000)
+        setTimeout(() => setIsOpen(false),1000)
       } else {
         setSearchList(data);
         setIsOpen(true);
@@ -43,19 +43,21 @@ const SearchInput = () => {
  
   useEffect(() => {},[isOpen])
   return (
-    <>
+    <div className='relative'>
       <form className="flex items-center gap-2" onSubmit={handleSearch}>
         <input type="text" className="grow input input-bordered rounded-full" placeholder="Search"
           value={search}
+          onBlur={() =>setTimeout(() => setIsOpen(false),500)}
+          onFocus={() =>search && setIsOpen(true)}
           onChange={(e) => setSearch(e.target.value)}
         />
         <button className="btn btn-circle bg-sky-500 text-white">
           <IoSearchSharp className='w-6 h-6 outline-none' />
         </button>
       </form>
-      {isOpen && (<div className={`dropdown ${isOpen && 'dropdown-open'} mt-2 w-full`}>
+      {isOpen && (<div className={`dropdown absolute ${isOpen && 'dropdown-open'} dropdown-left mt-2 w-full`}>
         <div tabIndex={0} className="btn m-1 hidden" ></div>
-        <ul tabIndex={0} className={`menu dropdown-content bg-base-100 rounded-box z-[100] w-56 p-2 dropdown-open shadow`}>
+        <ul tabIndex={0} className={`menu dropdown-content left-[-136px] relative bg-base-100 rounded-box z-[100] w-56 p-2 dropdown-open shadow`}>
           {err 
           ? <li className='left-0 text-left min-h-6 px-2 text-error'> {err}</li> 
           : searchList?.map( (user, i) => 
@@ -72,7 +74,7 @@ const SearchInput = () => {
         aria-label="My Chats"
         defaultChecked
       >My Chats</p>  
-    </>
+    </div>
   )
 }
 
