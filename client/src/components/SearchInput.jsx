@@ -41,13 +41,12 @@ const SearchInput = () => {
     setSearch('')
   }
  
-  useEffect(() => {},[isOpen])
   return (
     <div className='relative'>
       <form className="flex items-center gap-2" onSubmit={handleSearch}>
         <input type="text" className="grow input input-bordered rounded-full" placeholder="Search"
           value={search}
-          onBlur={() =>setTimeout(() => setIsOpen(false),500)}
+          onBlur={() =>setTimeout(() => setIsOpen(false),300)}
           onFocus={() =>search && setIsOpen(true)}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -55,7 +54,7 @@ const SearchInput = () => {
           <IoSearchSharp className='w-6 h-6 outline-none' />
         </button>
       </form>
-      {isOpen && (<div className={`dropdown absolute ${isOpen && 'dropdown-open'} dropdown-left mt-2 w-full`}>
+      {isOpen && (<div className={`dropdown absolute ${1 && 'dropdown-open'} dropdown-left mt-2 w-full`}>
         <div tabIndex={0} className="btn m-1 hidden" ></div>
         <ul tabIndex={0} className={`menu dropdown-content left-[-136px] relative bg-base-100 rounded-box z-[100] w-56 p-2 dropdown-open shadow`}>
           {err 
